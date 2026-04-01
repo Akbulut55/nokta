@@ -26,6 +26,7 @@ Nokta is NOT:
 - A general chatbot (conversations are structured interrogations, not open-ended)
 - A note-taking app (the system actively challenges and shapes your input)
 - A project management tool (it ends at spec, not at execution)
+- A code generator (it produces specs, not software — the agent layer comes later)
 
 ---
 
@@ -41,7 +42,7 @@ Nokta is NOT:
 ## 3. NON-GOALS
 
 <!-- SECTION OWNER: List at least 5 things Nokta v0.1 will NOT do, with a one-line reason for each. -->
-<!-- WHY: Prevents agent/student scope creep. If it's not explicitly a non-goal, someone will build it. -->
+<!-- WHY: Prevents scope creep. If it's not explicitly a non-goal, someone will build it. -->
 
 > TODO: Explicit list of what is out of scope and why.
 

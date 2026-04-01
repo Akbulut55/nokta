@@ -207,11 +207,11 @@ export const MATURITY_RULES: MaturityRule[] = [
 
 ```
 Open app → See idea list (empty state on first launch)
-  → Tap FAB (+) → Enter spark ("drone ile kargo teslimatı")
+  → Tap FAB (+) → Enter spark ("drone cargo delivery")
   → System creates DOT → Navigate to Idea Chat
-  → LLM asks: "Bu fikir hangi sorunu çözüyor?"
+  → LLM asks: "What problem does this idea solve?"
   → User answers → Maturity: DOT → LINE
-  → LLM asks: "Bu sorunu en çok kim yaşıyor?"
+  → LLM asks: "Who experiences this problem the most?"
   → User answers → LLM asks more → Maturity: LINE → PARAGRAPH
   → Continue until PARAGRAPH → PAGE
   → Navigate to Spec Card → See structured spec
@@ -222,14 +222,14 @@ Open app → See idea list (empty state on first launch)
 
 The home screen shows all ideas as cards in a vertical list.
 
-Components: `IdeaCard` (title, spark preview, maturity badge, timestamp), `MaturityBadge` (● ━ ¶ 📄, color-coded gray→yellow→blue→green), `EmptyState` ("Bir nokta ile başla." + pulsing dot animation), `FAB` (bottom-right, opens bottom sheet with TextInput).
+Components: `IdeaCard` (title, spark preview, maturity badge, timestamp), `MaturityBadge` (● ━ ¶ 📄, color-coded gray→yellow→blue→green), `EmptyState` ("Start with a dot." + pulsing dot animation), `FAB` (bottom-right, opens bottom sheet with TextInput).
 
 Behavior: List sorted by updatedAt desc. Tap card → navigate to chat. Long-press → delete confirmation. FAB → bottom sheet → type spark → send → create DOT idea → auto-navigate to chat.
 
 Acceptance Criteria:
 - GIVEN no ideas WHEN app opens THEN empty state shown with FAB visible
 - GIVEN 5 ideas WHEN app opens THEN all 5 cards visible, sorted by updatedAt desc
-- GIVEN user taps FAB and types "drone teslimat" WHEN user presses send THEN new DOT idea created and chat opens
+- GIVEN user taps FAB and types "drone delivery" WHEN user presses send THEN new DOT idea created and chat opens
 - GIVEN user long-presses idea WHEN delete confirmed THEN idea removed from list and storage
 
 ### Screen 2: Idea Chat (Refinement) — `app/idea/[id].tsx`
@@ -238,7 +238,7 @@ SMS-style chat where the system guides refinement.
 
 Components: `ChatBubble` (user=right/blue, assistant=left/gray), `MessageInput` (TextInput + send, disabled while loading), `MaturityProgress` (top bar, dot→line→paragraph→page), `SpecPreviewButton` (appears at PARAGRAPH+).
 
-Behavior: First load with empty messages → system sends first question. Each user message → system responds with next question. Maturity transitions automatically per MATURITY_RULES. Transition announced: "Fikriniz artık bir çizgi! 🎉". Messages persisted to AsyncStorage after each turn. Auto-scroll to bottom.
+Behavior: First load with empty messages → system sends first question. Each user message → system responds with next question. Maturity transitions automatically per MATURITY_RULES. Transition announced: "Your idea is now a line! 🎉". Messages persisted to AsyncStorage after each turn. Auto-scroll to bottom.
 
 Acceptance Criteria:
 - GIVEN new DOT idea WHEN chat opens THEN system's first message visible
@@ -250,9 +250,9 @@ Acceptance Criteria:
 
 Read-only structured spec view.
 
-Components: `SpecField` (labeled field: Problem, Audience, Solution, Success Metrics, Effort, Uniqueness), `MaturityBadge`, `SparkOrigin` ("Başlangıç noktanız: [spark]"), `ShareButton` (copy to clipboard as markdown).
+Components: `SpecField` (labeled field: Problem, Audience, Solution, Success Metrics, Effort, Uniqueness), `MaturityBadge`, `SparkOrigin` ("Your starting point: [spark]"), `ShareButton` (copy to clipboard as markdown).
 
-Behavior: All IdeaSpec fields displayed. Empty fields show "Henüz belirlenmedi" muted. Spec updates live from chat. Share copies formatted markdown to clipboard.
+Behavior: All IdeaSpec fields displayed. Empty fields show "Not yet defined" muted. Spec updates live from chat. Share copies formatted markdown to clipboard.
 
 Acceptance Criteria:
 - GIVEN PAGE maturity WHEN spec opens THEN all 6 fields populated
@@ -275,20 +275,20 @@ Nokta uses a lightweight local config system. This is NOT a remote server — it
       "components": [
         { "type": "IdeaList", "props": { "sortBy": "updatedAt", "sortOrder": "desc", "showMaturityBadge": true, "maxPreviewLength": 50 } },
         { "type": "FAB", "props": { "position": "bottom-right", "icon": "plus" } },
-        { "type": "EmptyState", "props": { "message": "Bir nokta ile başla.", "showAnimation": true } }
+        { "type": "EmptyState", "props": { "message": "Start with a dot.", "showAnimation": true } }
       ]
     },
     "chat": {
       "components": [
         { "type": "MaturityProgress", "props": { "position": "top" } },
         { "type": "ChatBubble", "props": { "userColor": "#007AFF", "assistantColor": "#E5E5EA" } },
-        { "type": "MessageInput", "props": { "placeholder": "Fikrinizi geliştirin...", "disableWhileLoading": true } }
+        { "type": "MessageInput", "props": { "placeholder": "Refine your idea...", "disableWhileLoading": true } }
       ]
     },
     "specCard": {
       "components": [
         { "type": "SparkOrigin", "props": { "highlighted": true } },
-        { "type": "SpecField", "props": { "fields": ["problem", "audience", "solution", "successMetrics", "effortEstimate", "uniqueness"], "emptyText": "Henüz belirlenmedi" } },
+        { "type": "SpecField", "props": { "fields": ["problem", "audience", "solution", "successMetrics", "effortEstimate", "uniqueness"], "emptyText": "Not yet defined" } },
         { "type": "ShareButton", "props": { "format": "markdown" } }
       ]
     }
@@ -351,68 +351,68 @@ export async function getNextQuestion(idea: Idea, messages: Message[]): Promise<
 
 ```json
 {
-  "dot_turn_0": "İlginç bir kıvılcım! Bu fikir hangi gerçek dünya sorununu çözüyor? Kim bu sorunla karşılaşıyor?",
-  "dot_turn_2": "Anladım. Bu sorunu en çok kim yaşıyor? Hedef kitlenizi tanımlayabilir misiniz?",
-  "line_turn_4": "Hedef kitle net. Şimdi çözümünüzü somutlaştıralım — bu sorunu TAM olarak nasıl çözeceksiniz?",
-  "line_turn_6": "Çözüm şekilleniyor. Başarıyı nasıl ölçersiniz? Hangi metrikler fikrinizin işe yaradığını kanıtlar?",
-  "paragraph_turn_8": "Güzel metrikler. Bu fikri benzerlerinden ayıran temel fark ne?",
-  "paragraph_turn_10": "Fikriniz artık tam bir spec! Efor tahmini yapabilir misiniz? (S/M/L/XL)",
-  "fallback": "Bu konuyu biraz daha açabilir misiniz? Daha fazla detay fikrinizi olgunlaştırmamıza yardımcı olacak."
+  "dot_turn_0": "Interesting spark! What real-world problem does this idea solve? Who faces this problem?",
+  "dot_turn_2": "I see. Who suffers from this problem the most? Can you define your target audience?",
+  "line_turn_4": "Audience is clear. Now let's make your solution concrete — how exactly will you solve this problem?",
+  "line_turn_6": "Solution is taking shape. How will you measure success? What metrics prove your idea works?",
+  "paragraph_turn_8": "Great metrics. What is the key differentiator that sets this idea apart from similar ones?",
+  "paragraph_turn_10": "Your idea is now a complete spec! Can you estimate the effort? (S/M/L/XL)",
+  "fallback": "Can you elaborate on that? More detail will help us refine your idea further."
 }
 ```
 
 ### Golden Transcripts
 
-**Transcript 1: "Drone Kargo"**
+**Transcript 1: "Drone Cargo"**
 ```
-User: drone ile kargo teslimatı
-Assistant: İlginç bir kıvılcım! Bu fikir hangi gerçek dünya sorununu çözüyor?
-User: Son mil teslimat çok pahalı, özellikle kırsal bölgelerde
-Assistant: Bu sorunu en çok kim yaşıyor?
-User: Kırsal bölgedeki e-ticaret müşterileri ve küçük lojistik firmaları
-Assistant: Çözümünüzü somutlaştıralım — nasıl çözeceksiniz?
-User: Otonom drone filosu, merkez depolardan 5kg altı paketler, 30dk teslimat
-Assistant: Başarıyı nasıl ölçersiniz?
-User: Teslimat başına maliyet %60 düşüş, ortalama teslimat 30dk altı
-Assistant: Bu fikri benzerlerinden ayıran ne?
-User: Mevcut drone şirketleri şehir içi, biz kırsal optimizasyonu yapıyoruz
-Assistant: Efor tahmini?
+User: drone cargo delivery
+Assistant: Interesting spark! What real-world problem does this idea solve?
+User: Last-mile delivery is too expensive, especially in rural areas
+Assistant: Who suffers from this problem the most?
+User: E-commerce customers in rural areas and small logistics companies
+Assistant: Let's make your solution concrete — how will you solve it?
+User: Autonomous drone fleet, sub-5kg packages from central depots, 30-min delivery
+Assistant: How will you measure success?
+User: 60% reduction in cost per delivery, average delivery under 30 minutes
+Assistant: What sets this idea apart from similar ones?
+User: Existing drone companies focus on urban areas, we optimize for rural
+Assistant: Effort estimate?
 User: XL
 → MaturityStage.PAGE
 ```
 
-**Transcript 2: "Öğrenci Bütçe App"**
+**Transcript 2: "Student Budget App"**
 ```
-User: öğrenci bütçe takip
-Assistant: Bu fikir hangi sorunu çözüyor?
-User: Öğrenciler ay sonunda parasız kalıyor
-Assistant: Bu sorunu en çok kim yaşıyor?
-User: 18-25 yaş üniversite öğrencileri, KYK bursluları
-Assistant: Çözümünüzü somutlaştıralım.
-User: SMS bazlı mikro-hatırlatmalar + haftalık bütçe raporu
-Assistant: Başarıyı nasıl ölçersiniz?
-User: Kullanıcıların %70'i ay sonunda bütçenin %10'undan fazlasını koruyor
-Assistant: Benzerlerinden farkı?
-User: Mevcut uygulamalar karmaşık, bu SMS kadar basit
-Assistant: Efor tahmini?
+User: student budget tracker
+Assistant: What problem does this idea solve?
+User: Students run out of money by end of month
+Assistant: Who suffers from this problem the most?
+User: University students aged 18-25
+Assistant: Let's make your solution concrete.
+User: SMS-based micro-reminders + weekly budget report
+Assistant: How will you measure success?
+User: 70% of users retain more than 10% of their budget by end of month
+Assistant: What sets this apart from similar ones?
+User: Existing apps are too complex; this is as simple as SMS
+Assistant: Effort estimate?
 User: S
 → MaturityStage.PAGE
 ```
 
-**Transcript 3: "Akademik İntihal Dedektörü"**
+**Transcript 3: "Academic Plagiarism Detector"**
 ```
-User: yapay zeka ile akademik intihal tespiti
-Assistant: Bu fikir hangi sorunu çözüyor?
-User: Mevcut intihal yazılımları AI-üretilmiş metni yakalayamıyor
-Assistant: Bu sorunu en çok kim yaşıyor?
-User: Üniversite hocaları ve dergi editörleri
-Assistant: Çözümünüzü somutlaştıralım.
-User: Stilometrik analiz + LLM fingerprinting ile hibrit algılama
-Assistant: Başarıyı nasıl ölçersiniz?
-User: %95+ doğruluk, %5 altı false positive
-Assistant: Benzerlerinden farkı?
-User: Turnitin metin eşleşmesi yapıyor, biz yazım stili analizi ekliyoruz
-Assistant: Efor tahmini?
+User: AI-powered academic plagiarism detection
+Assistant: What problem does this idea solve?
+User: Existing plagiarism tools cannot catch AI-generated text
+Assistant: Who suffers from this problem the most?
+User: University professors and journal editors
+Assistant: Let's make your solution concrete.
+User: Hybrid detection using stylometric analysis + LLM fingerprinting
+Assistant: How will you measure success?
+User: 95%+ accuracy, less than 5% false positive rate
+Assistant: What sets this apart from similar ones?
+User: Turnitin does text matching; we add writing style analysis
+Assistant: Effort estimate?
 User: L
 → MaturityStage.PAGE
 ```
@@ -440,7 +440,7 @@ Rules:
 - Timeout: 10s (`FEATURES.LLM_TIMEOUT_MS`)
 - On error: return fallback mock response
 - Max 20 LLM calls per idea per session
-- Exceeded: "Bugünlük yeterli iterasyon. Yarın devam edelim!"
+- Exceeded: "Enough iteration for today. Let's continue tomorrow!"
 
 ---
 
@@ -614,9 +614,9 @@ docs(mobile-md): improve LLM contract section
 test("user can create a new idea from spark", async () => {
   render(<App />);
   fireEvent.press(screen.getByTestId("fab-button"));
-  fireEvent.changeText(screen.getByTestId("spark-input"), "drone teslimat");
+  fireEvent.changeText(screen.getByTestId("spark-input"), "drone delivery");
   fireEvent.press(screen.getByTestId("spark-submit"));
-  expect(await screen.findByText("drone teslimat")).toBeTruthy();
+  expect(await screen.findByText("drone delivery")).toBeTruthy();
   expect(screen.getByTestId("maturity-badge-dot")).toBeTruthy();
 });
 ```

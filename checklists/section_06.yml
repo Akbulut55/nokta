@@ -4,22 +4,22 @@ file_pattern: "## 6. UI CONFIG"
 min_words: 80
 checks:
   - id: json_schema
-    description: "config/screens.json şeması tanımlı"
+    description: "config/screens.json schema defined"
     pattern: "(screens\\.json|config/|schema)"
     weight: 20
   - id: component_mapping
-    description: "JSON → React Native component mapping kuralları var"
+    description: "JSON → React Native component mapping rules present"
     pattern: "(mapping|map|component.*type|render)"
     weight: 20
   - id: example_json
-    description: "Örnek JSON snippet var"
+    description: "Example JSON snippet present"
     pattern: "```(json|JSON)"
     weight: 25
   - id: feature_flags
-    description: "Feature flag mekanizması tanımlı"
+    description: "Feature flag mechanism defined"
     pattern: "(feature.*flag|features\\.ts|toggle|enabled)"
     weight: 20
   - id: v02_note
-    description: "Backend-driven UI v0.2'ye ertelendi notu var"
-    pattern: "(v0\\.2|defer|ertel|future|sonra)"
+    description: "Note that backend-driven UI is deferred to v0.2"
+    pattern: "(v0\\.2|defer|future)"
     weight: 15

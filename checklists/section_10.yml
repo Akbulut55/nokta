@@ -4,22 +4,22 @@ file_pattern: "## 10. CONTRIBUTION PROTOCOL"
 min_words: 80
 checks:
   - id: branch_naming
-    description: "Branch naming convention var"
-    pattern: "(branch|dal|section/|feature/)"
+    description: "Branch naming convention present"
+    pattern: "(branch|section/|feature/)"
     weight: 20
   - id: commit_format
-    description: "Commit message formatı var"
+    description: "Commit message format present"
     pattern: "(commit|conventional|feat:|fix:|chore:)"
     weight: 20
   - id: pr_template
-    description: "PR template tanımlı"
-    pattern: "(PR|pull.*request|template|şablon)"
+    description: "PR template defined"
+    pattern: "(PR|pull.*request|template)"
     weight: 20
   - id: quarantine
-    description: "Quarantine kuralları var"
-    pattern: "(quarantine|karantina|manual.*review|CI.*config|dependency)"
+    description: "Quarantine rules present"
+    pattern: "(quarantine|manual.*review|CI.*config|dependency)"
     weight: 25
   - id: max_pr_size
-    description: "Max PR boyutu sınırı var"
-    pattern: "(max|limit|sınır|file.*change|line.*change)"
+    description: "Max PR size limit present"
+    pattern: "(max|limit|file.*change|line.*change)"
     weight: 15

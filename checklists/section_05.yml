@@ -4,27 +4,27 @@ file_pattern: "## 5. SCREEN & FEATURE SPEC"
 min_words: 150
 checks:
   - id: screen_descriptions
-    description: "Her ekran için açıklama paragrafı var"
-    pattern: "(Screen|Ekran|Home|List|Chat|Spec Card)"
+    description: "Description paragraph present for each screen"
+    pattern: "(Screen|Home|List|Chat|Spec Card)"
     min_occurrences: 3
     weight: 20
   - id: navigation
-    description: "Navigation akışı belirtilmiş"
+    description: "Navigation flow specified"
     pattern: "(navigate|navigation|router|screen.*→.*screen|→)"
     weight: 15
   - id: component_list
-    description: "Her ekran için component listesi var"
-    pattern: "(component|bileşen|FlatList|TextInput|Card|Button)"
+    description: "Component list present for each screen"
+    pattern: "(component|FlatList|TextInput|Card|Button)"
     weight: 15
   - id: maturity_indicator
-    description: "Maturity indicator davranışı tanımlı"
-    pattern: "(maturity|olgunluk|dot.*line|indicator|progress)"
+    description: "Maturity indicator behavior defined"
+    pattern: "(maturity|dot.*line|indicator|progress)"
     weight: 15
   - id: user_journey
-    description: "User journey tanımlı"
-    pattern: "(journey|akış|flow|oluştur.*cevap.*gör|create.*answer.*view)"
+    description: "User journey defined"
+    pattern: "(journey|flow|create.*answer.*view)"
     weight: 20
   - id: acceptance_criteria
-    description: "Her ekran için kabul kriterleri var"
-    pattern: "(accept|criteria|kriter|GIVEN|WHEN|THEN|must|should)"
+    description: "Acceptance criteria present for each screen"
+    pattern: "(accept|criteria|GIVEN|WHEN|THEN|must|should)"
     weight: 15

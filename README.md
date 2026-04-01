@@ -1,48 +1,48 @@
 # Nokta — Community-Driven mobile.md
 
-> 1 dosya, 0 insan review. CI karar verir.
+> 1 file, 0 human review. CI decides.
 
-## Ne?
+## What?
 
-`mobile.md` Nokta mobil uygulamasının Karpathy-tarzı spec dosyasıdır. Bu dosya, AI agent'ların (Claude Code / Codex) uygulamayı sıfırdan inşa edebileceği tam bir spesifikasyon içerir.
+`mobile.md` is the Karpathy-style spec file for the Nokta mobile app. This file serves as a complete specification from which AI agents (Claude Code / Codex) can build the application from scratch.
 
-**İnsan spec yazar, makine kod yazar.**
+**Humans write the spec, machines write the code.**
 
-## Nasıl Çalışır?
+## How It Works?
 
 ```
-Bir section seçersin
+Pick a section
     ↓
-Branch açarsın: section/04-data-contracts
+Open a branch: section/04-data-contracts
     ↓
-mobile.md'nin ilgili section'ını yazarsın
+Write the relevant section in mobile.md
     ↓
-PR açarsın
+Open a PR
     ↓
-CI otomatik skorlar (0-100)
+CI scores automatically (0-100)
     ↓
-Skor ≥ main'deki mevcut skor → ✅ Otomatik merge
-Skor < main'deki mevcut skor → ❌ Otomatik reject
+Score ≥ current score on main → ✅ Auto-merge
+Score < current score on main → ❌ Auto-reject
     ↓
-Düzelt, push et, tekrar dene
+Fix, push, try again
 ```
 
-**İnsan review yok. Metrik karar veriyor. Score asla düşemez.**
+**No human review. The metric decides. Score never drops.**
 
-## Hızlı Başlangıç
+## Quick Start
 
 ```bash
-# 1. Repo'yu fork'la ya da clone'la
+# 1. Fork or clone the repo
 git clone https://github.com/seyyah/nokta.git
 cd nokta
 
-# 2. Branch oluştur (section numaranı seç)
+# 2. Create a branch (choose your section number)
 git checkout -b section/04-data-contracts
 
-# 3. mobile.md'yi aç, ilgili section'ı bul, yaz
-# Her section'ın içinde <!-- YORUM --> olarak talimatlar var
+# 3. Open mobile.md, find your section, write it
+# Each section has <!-- COMMENT --> instructions inside
 
-# 4. Skorunu kontrol et (opsiyonel, local test)
+# 4. Check your score (optional, local test)
 pip install pyyaml
 python scripts/section_score.py --section 4
 
@@ -51,69 +51,69 @@ git add mobile.md
 git commit -m "feat(section-04): add data contracts"
 git push origin section/04-data-contracts
 
-# 6. GitHub'da PR aç → CI otomatik çalışır → sonucu bekle
+# 6. Open a PR on GitHub → CI runs automatically → wait for result
 ```
 
-## Section Listesi
+## Section List
 
-| # | Section | İçerik |
-|---|---------|---------|
-| 0 | IMMUTABLE INFRA | Dokunulamaz dosyalar listesi |
-| 1 | IDENTITY | ✅ Referans olarak dolu |
-| 2 | SETUP PROTOCOL | Sıfırdan çalışan app'e kurulum adımları |
-| 3 | NON-GOALS | v0.1'de yapılmayacaklar |
-| 4 | DATA CONTRACTS | TypeScript interface'leri ve storage şeması |
-| 5 | SCREEN & FEATURE SPEC | 3 ekran, UX akışı, component listesi |
-| 6 | UI CONFIG | Local JSON-driven UI config sistemi |
+| # | Section | Contents |
+|---|---------|----------|
+| 0 | IMMUTABLE INFRA | List of files that must not be modified |
+| 1 | IDENTITY | ✅ Already complete — use as reference |
+| 2 | SETUP PROTOCOL | Setup steps from zero to running app |
+| 3 | NON-GOALS | What will not be built in v0.1 |
+| 4 | DATA CONTRACTS | TypeScript interfaces and storage schema |
+| 5 | SCREEN & FEATURE SPEC | 3 screens, UX flow, component list |
+| 6 | UI CONFIG | Local JSON-driven UI config system |
 | 7 | LLM CONTRACT | Mock LLM, prompt template, golden transcripts |
-| 8 | OBJECTIVE FUNCTION | Hard gate'ler + tek skaler metrik |
-| 9 | THE RATCHET LOOP | PR → CI → measure → keep/revert döngüsü |
-| 10 | CONTRIBUTION PROTOCOL | Branch, commit, PR kuralları |
-| 11 | ARCHITECTURAL INVARIANTS | Kod yapısı kuralları |
-| 12 | TESTING PHILOSOPHY | Test standartları ve anti-pattern'ler |
+| 8 | OBJECTIVE FUNCTION | Hard gates + single scalar metric |
+| 9 | THE RATCHET LOOP | PR → CI → measure → keep/revert cycle |
+| 10 | CONTRIBUTION PROTOCOL | Branch, commit, PR rules |
+| 11 | ARCHITECTURAL INVARIANTS | Code structure rules |
+| 12 | TESTING PHILOSOPHY | Test standards and anti-patterns |
 
-## Skorlama
+## Scoring
 
-Her section için bir checklist vardır (`checklists/section_XX.yml`). CI bu checklist'i okuyarak section'ı değerlendirir:
+Each section has a checklist (`checklists/section_XX.yml`). CI reads this checklist and evaluates the section:
 
-- **Yapısal kontroller:** Gerekli başlıklar var mı? Minimum kelime sayısı geçildi mi?
-- **İçerik kontrolleri:** Belirli kavramlar/pattern'ler var mı? (ör: TypeScript code block, JSON schema)
-- **Her kontrol bir ağırlık taşır.** Toplam 100 puan üzerinden skorlanır.
+- **Structural checks:** Are required headings present? Is the minimum word count met?
+- **Content checks:** Are specific concepts/patterns present? (e.g. TypeScript code block, JSON schema)
+- **Each check carries a weight.** Scored out of 100 points.
 
-**Puanlama kuralı:** Skorun main branch'teki mevcut skordan **düşük olamaz.** Eşit veya yüksekse merge olur.
+**Scoring rule:** Your score cannot drop below the current score on the main branch. Equal or higher means you merge.
 
-### Local'de Test Et
+### Test Locally
 
 ```bash
-# Tek section
+# Single section
 python scripts/section_score.py --section 4
 
-# Tüm section'lar
+# All sections
 python scripts/section_score.py --all
 
-# CI formatında çıktı
+# CI-formatted output
 python scripts/section_score.py --all --ci-comment
 ```
 
-## Kurallar
+## Rules
 
-1. **Sadece `mobile.md` dosyasını düzenle.** Checklist YAML'ları, CI workflow'u ve scripts'i düzenleme — bunlar IMMUTABLE INFRA.
-2. **Section 1 (IDENTITY) zaten dolu.** Referans olarak kullan, formatını takip et.
-3. **Birden fazla kişi aynı section'ı yazabilir.** En yüksek skoru alan merge edilir.
-4. **TODO placeholder'ları sil.** `> TODO:` satırları kaldığı sürece section skoru düşük kalır.
-5. **AI araçları kullanabilirsin** — vibe-writing serbest. Ama checklist'i geç.
-6. **Türkçe veya İngilizce** yazabilirsin. Checklist her iki dili de destekler.
+1. **Only edit `mobile.md`.** Do not edit checklist YAMLs, the CI workflow, or scripts — these are IMMUTABLE INFRA.
+2. **Section 1 (IDENTITY) is already complete.** Use it as a reference and follow its format.
+3. **Multiple people can write the same section.** The highest score gets merged.
+4. **Delete TODO placeholders.** As long as `> TODO:` lines remain, the section score stays low.
+5. **AI tools are welcome** — vibe-writing is fine. But you still need to pass the checklist.
+6. **English or Turkish** — both are supported by the checklist.
 
-## SSS
+## FAQ
 
-**S: Aynı section'ı başka biri de yazıyorsa ne olur?**
-İlk merge olan kazanır. Sonra gelen PR, o skoru geçmek zorunda. Ratchet.
+**Q: What if someone else is writing the same section?**
+First to merge wins. The next PR must beat that score. Ratchet.
 
-**S: PR'ım reddedildi, ne yapmalıyım?**
-CI comment'ına bak — hangi checklist item'ları fail olmuş göreceksin. Düzelt, push et, CI tekrar koşar.
+**Q: My PR was rejected — what should I do?**
+Read the CI comment — it will show which checklist items failed. Fix them, push, and CI runs again.
 
-**S: Section 1 zaten dolu, onu geliştirebilir miyim?**
-Evet — ama mevcut skoru (100/100) geçmen lazım. İçeriği silersen skor düşer, reject olursun.
+**Q: Section 1 is already complete — can I improve it?**
+Yes — but you need to beat its current score (100/100). Delete content and the score drops; you'll be rejected.
 
-**S: Birden fazla section katkısı verebilir miyim?**
-Evet, her biri ayrı branch + ayrı PR.
+**Q: Can I contribute to multiple sections?**
+Yes — each in its own branch + its own PR.
