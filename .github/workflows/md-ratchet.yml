@@ -37,7 +37,7 @@ jobs:
         id: main_score
         run: |
           cd main-branch
-          MAIN_SCORES=$(python scripts/section_score.py --all --md-file program.md 2>/dev/null | grep "TOTAL AVERAGE" | grep -oP '\d+' || echo "0")
+          MAIN_SCORES=$(python scripts/section_score.py --all --md-file program.md 2>/dev/null | grep "TOTAL AVERAGE" | grep -oP '\d+' | head -1 || echo "0")
           echo "total=$MAIN_SCORES" >> $GITHUB_OUTPUT
           SECTION_MAP="{"
           for i in $(seq 0 12); do
@@ -55,7 +55,7 @@ jobs:
       - name: Score PR branch
         id: pr_score
         run: |
-          PR_SCORES=$(python scripts/section_score.py --all --md-file program.md 2>/dev/null | grep "TOTAL AVERAGE" | grep -oP '\d+' || echo "0")
+          PR_SCORES=$(python scripts/section_score.py --all --md-file program.md 2>/dev/null | grep "TOTAL AVERAGE" | grep -oP '\d+' | head -1 || echo "0")
           echo "total=$PR_SCORES" >> $GITHUB_OUTPUT
           python scripts/section_score.py --all --ci-comment --md-file program.md > /tmp/score_report.md
           SECTION_MAP="{"
