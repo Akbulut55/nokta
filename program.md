@@ -582,11 +582,19 @@ docs(section-09): expand ratchet loop with merge queue and rerun protocol
 
 ### Branch Naming
 ```
-feature/<short-description>    # feature/idea-list-screen
-fix/<short-description>        # fix/maturity-transition-bug
-test/<short-description>       # test/golden-flow-persistence
-improve/<short-description>    # improve/mobile-md-section-7
+section/<nn>-<description>     # section/10-contribution-protocol
+spec/<feature-name>            # spec/share-markdown-export
+implement/<feature-name>       # implement/idea-list-screen
+fix/<bug-description>          # fix/maturity-transition-bug
+test/<test-description>        # test/golden-flow-persistence
+improve/<doc-description>      # improve/mobile-md-section-7
 ```
+
+Path-specific rules:
+- Path A: use `section/<nn>-<description>` and keep the PR scoped to one numbered section whenever possible.
+- Path B: use `spec/<feature-name>` for new files inside `specs/`.
+- Path C: use `implement/`, `fix/`, or `test/` depending on the change type.
+- Reserve `improve/` for documentation cleanup outside the scored surfaces.
 
 ### Commit Format (Conventional Commits)
 ```
@@ -595,6 +603,9 @@ test(golden-flow): add persistence flow test
 fix(service-llm): handle timeout in mock mode
 docs(mobile-md): improve LLM contract section
 ```
+
+Additional Path A example:
+- `docs(section-10): clarify branch naming and PR evidence rules`
 
 ### PR Template
 
@@ -615,6 +626,15 @@ docs(mobile-md): improve LLM contract section
 - [ ] No immutable files modified
 - [ ] PR is ≤ 10 files, ≤ 500 lines changed
 ```
+
+### Evidence Rules
+- Path A and Path B do not require screenshots or APKs; the required evidence is the score output plus a focused diff.
+- Path C requires visible product evidence because behavior must be reviewed, not just described.
+
+### Path A Discipline
+- Prefer one numbered section per PR.
+- Mention the section number in both the branch name and the commit message.
+- If someone else merges the same section first, rebase and compare your wording against the new baseline before opening or updating the PR.
 
 ### Quarantine (Manual Review Required)
 - `.github/workflows/` changes
