@@ -636,6 +636,23 @@ Co-located: `src/features/idea/components/__tests__/IdeaCard.test.tsx`
 
 ---
 
+## 13. AUTONOMOUS REVIEW & HUMAN-IN-THE-LOOP
+
+The project uses an LLM-powered reviewer to scale evaluation beyond regex-based CI gates. This reviewer ensures contributors align with the "Spirit of Nokta" as defined in this document.
+
+### Agent Reviewer
+- **Function**: Re-reads the entire `program.md` and evaluates PR diffs for philosophical compliance.
+- **Threshold**: Confidence scores ≥ 90% trigger autonomous merges (if hard gates pass).
+- **Feedback**: Every PR receives a high-quality feedback paragraph from the agent.
+
+### Decision Ledger
+- **Location**: `scripts/pr_decision_ledger.yml`
+- **Purpose**: Records all AI evaluations and subsequent human overrides.
+- **Persistence**: Once a human overrides or confirms an agent decision, that logic is codified into the ledger to guide future agent behaviors.
+- **Transparency**: All contributors can view the ledger to understand why specific architectural or philosophical decisions were made.
+
+---
+
 ## AUTONOMY MANDATE
 
 This file is the single source of truth. The CI is the judge. The ratchet never regresses.
